@@ -5,21 +5,26 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "peticao")
-public class Peticao {
+@Table(name = "reclamacao")
+public class Reclamacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 150)
-    private String titulo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 40)
+    private CategoriaReclamacao categoria;
 
-    @Column(nullable = false, length = 2000)
-    private String descricao;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private NivelRelevancia nivelRelevancia;
 
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
+
+    @Column(nullable = false)
+    private boolean alertaEmitido = false;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -29,7 +34,7 @@ public class Peticao {
     @JoinColumn(name = "comunidade_id", nullable = false)
     private Comunidade comunidade;
 
-    public Peticao() {
+    public Reclamacao() {
     }
 
     public Long getId() {
@@ -40,20 +45,20 @@ public class Peticao {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public CategoriaReclamacao getCategoria() {
+        return categoria;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setCategoria(CategoriaReclamacao categoria) {
+        this.categoria = categoria;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public NivelRelevancia getNivelRelevancia() {
+        return nivelRelevancia;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNivelRelevancia(NivelRelevancia nivelRelevancia) {
+        this.nivelRelevancia = nivelRelevancia;
     }
 
     public LocalDateTime getDataCriacao() {
@@ -62,6 +67,14 @@ public class Peticao {
 
     public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public boolean isAlertaEmitido() {
+        return alertaEmitido;
+    }
+
+    public void setAlertaEmitido(boolean alertaEmitido) {
+        this.alertaEmitido = alertaEmitido;
     }
 
     public Usuario getAutor() {

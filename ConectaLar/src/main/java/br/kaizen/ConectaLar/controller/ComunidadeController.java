@@ -7,16 +7,36 @@ import br.kaizen.ConectaLar.model.Usuario;
 import br.kaizen.ConectaLar.service.ComunidadeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import br.kaizen.ConectaLar.DTO.MoradorResponse;
+import br.kaizen.ConectaLar.service.UsuarioService;
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/comunidade")
 public class ComunidadeController {
 
     private final ComunidadeService comunidadeService;
+    private final UsuarioService usuarioService;
 
-    public ComunidadeController(ComunidadeService comunidadeService) {
+    public ComunidadeController(
+            ComunidadeService comunidadeService,
+            UsuarioService usuarioService) {
         this.comunidadeService = comunidadeService;
+        this.usuarioService = usuarioService;
     }
+    
+    
+@GetMapping("/{comunidadeId}/moradores")
+public ResponseEntity<List<MoradorResponse>> listarMoradores(
+        @PathVariable Long comunidadeId) {
+
+    List<MoradorResponse> moradores =
+            usuarioService.buscarMoradores(comunidadeId);
+
+    return ResponseEntity.ok(moradores);
+}
 
     @PostMapping("/entrar")
     public ResponseEntity<?> entrar(

@@ -1,5 +1,7 @@
+
 package br.kaizen.ConectaLar.service;
 
+import br.kaizen.ConectaLar.DTO.MensagemResponse;
 import br.kaizen.ConectaLar.model.Comunidade;
 import br.kaizen.ConectaLar.model.Mensagem;
 import br.kaizen.ConectaLar.model.Usuario;
@@ -24,7 +26,7 @@ public class MensagemService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Mensagem enviarMensagem(Long usuarioId, String texto) {
+    public MensagemResponse enviarMensagem(Long usuarioId, String texto) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() ->
@@ -43,16 +45,17 @@ public class MensagemService {
         Comunidade comunidade = usuario.getComunidade();
 
         Mensagem mensagem = new Mensagem();
-
         mensagem.setTexto(texto);
         mensagem.setDataHora(LocalDateTime.now());
         mensagem.setUsuario(usuario);
         mensagem.setComunidade(comunidade);
 
-        return mensagemRepository.save(mensagem);
+        Mensagem mensagemSalva = mensagemRepository.save(mensagem);
+
+        return converterParaResponse(mensagemSalva);
     }
 
-    public List<Mensagem> buscarMensagens(Long usuarioId) {
+    public List<MensagemResponse> buscarMensagens(Long usuarioId) {
 
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() ->
@@ -65,7 +68,23 @@ public class MensagemService {
 
         Long comunidadeId = usuario.getComunidade().getId();
 
-        return mensagemRepository
-                .findByComunidadeIdOrderByDataHoraAsc(comunidadeId);
+        List<Mensagem> mensagens =
+                mensagemRepository
+                        .findByComunidadeIdOrderByDataHoraAsc(comunidadeId);
+
+        return mensagens.stream()
+                .map(this::converterParaResponse)
+                .toList();
+    }
+
+    private MensagemResponse converterParaResponse(Mensagem mensagem) {
+
+        return new MensagemResponse(
+                mensagem.getId(),
+                mensagem.getTexto(),
+                mensagem.getDataHora(),
+                mensagem.getUsuario().getId(),
+                mensagem.getUsuario().getNome()
+        );
     }
 }

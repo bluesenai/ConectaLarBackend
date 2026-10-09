@@ -1,6 +1,7 @@
+
 package br.kaizen.ConectaLar.controller;
 
-import br.kaizen.ConectaLar.model.Mensagem;
+import br.kaizen.ConectaLar.DTO.MensagemResponse;
 import br.kaizen.ConectaLar.service.MensagemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class MensagemController {
 
         try {
 
-            Mensagem mensagem =
+            MensagemResponse mensagem =
                     mensagemService.enviarMensagem(usuarioId, texto);
 
             return ResponseEntity.ok(mensagem);
@@ -43,7 +44,7 @@ public class MensagemController {
 
         try {
 
-            List<Mensagem> mensagens =
+            List<MensagemResponse> mensagens =
                     mensagemService.buscarMensagens(usuarioId);
 
             return ResponseEntity.ok(mensagens);

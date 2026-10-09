@@ -4,6 +4,8 @@ import br.kaizen.ConectaLar.model.Usuario;
 import br.kaizen.ConectaLar.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import br.kaizen.ConectaLar.model.Comunidade;
+import br.kaizen.ConectaLar.DTO.MoradorResponse;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -43,5 +45,18 @@ public class UsuarioService {
     }
 
     return usuario.getComunidade();
+}
+    
+public List<MoradorResponse> buscarMoradores(Long comunidadeId) {
+
+    List<Usuario> usuarios =
+            usuarioRepository.findByComunidadeId(comunidadeId);
+
+    return usuarios.stream()
+            .map(usuario -> new MoradorResponse(
+                    usuario.getId(),
+                    usuario.getNome()
+            ))
+            .toList();
 }
 }

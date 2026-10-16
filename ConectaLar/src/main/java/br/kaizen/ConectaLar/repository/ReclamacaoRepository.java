@@ -1,13 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package br.kaizen.ConectaLar.repository;
 
-/**
- *
- * @author sesi3dib
- */
-public class ReclamacaoRepository {
-    
+import br.kaizen.ConectaLar.model.CategoriaReclamacao;
+import br.kaizen.ConectaLar.model.NivelRelevancia;
+import br.kaizen.ConectaLar.model.Reclamacao;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public interface ReclamacaoRepository
+        extends JpaRepository<Reclamacao, Long> {
+
+    @Query("""
+        SELECT COUNT(r)
+        FROM Reclamacao r
+        WHERE r.comunidade.id = :comunidadeId
+          AND r.categoria = :categoria
+          AND r.nivelRelevancia = :nivel
+          AND r.dataCriacao >= :inicio
+        """)
+    long contarReclamacoesRecentes(
+            @Param("comunidadeId") Long comunidadeId,
+            @Param("categoria") CategoriaReclamacao categoria,
+            @Param("nivel") NivelRelevancia nivel,
+            @Param("inicio") LocalDateTime inicio
+    );
+
+    boolean existsByComunidadeIdAndCategoriaAndDataCriacaoGreaterThanEqualAndAlertaEmitidoTrue(
+            Long comunidadeId,
+            CategoriaReclamacao categoria,
+            LocalDateTime inicio
+    );
+
+    List<Reclamacao> findByComunidadeIdOrderByDataCriacaoDesc(
+            Long comunidadeId
+    );
 }

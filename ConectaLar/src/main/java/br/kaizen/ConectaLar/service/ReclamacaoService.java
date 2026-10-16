@@ -10,24 +10,27 @@ import br.kaizen.ConectaLar.model.Reclamacao;
 import br.kaizen.ConectaLar.model.Usuario;
 import br.kaizen.ConectaLar.repository.ReclamacaoRepository;
 import br.kaizen.ConectaLar.repository.UsuarioRepository;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import br.kaizen.ConectaLar.service.NotificacaoService;
 
 @Service
 public class ReclamacaoService {
 
     private final ReclamacaoRepository reclamacaoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final NotificacaoService notificacaoService;
 
     public ReclamacaoService(
-            ReclamacaoRepository reclamacaoRepository,
-            UsuarioRepository usuarioRepository) {
-        this.reclamacaoRepository = reclamacaoRepository;
-        this.usuarioRepository = usuarioRepository;
+        ReclamacaoRepository reclamacaoRepository,
+        UsuarioRepository usuarioRepository,
+        NotificacaoService notificacaoService) {
+
+    this.reclamacaoRepository = reclamacaoRepository;
+    this.usuarioRepository = usuarioRepository;
+    this.notificacaoService = notificacaoService;
     }
 
     public NivelRelevancia definirNivel(
@@ -136,7 +139,9 @@ public class ReclamacaoService {
         reclamacao.setAlertaEmitido(true);
         reclamacaoRepository.save(reclamacao);
 
-        return true;
+        notificacaoService.notificarComunidade(reclamacao);
+
+            return true;
     }
 
    

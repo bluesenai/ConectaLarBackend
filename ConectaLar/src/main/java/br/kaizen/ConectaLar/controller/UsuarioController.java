@@ -7,6 +7,7 @@ import br.kaizen.ConectaLar.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.kaizen.ConectaLar.model.Comunidade;
+import br.kaizen.ConectaLar.DTO.LoginResponse;
 
 import java.util.Optional;
 
@@ -20,25 +21,37 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        Optional<Usuario> usuario = usuarioService.login(
-                request.getEmail(),
-                request.getSenha()
-        );
+    Optional<Usuario> resultado = usuarioService.login(
+            request.getEmail(),
+            request.getSenha()
+    );
 
-        if (usuario.isPresent()) {
-
-            return ResponseEntity.ok(
-                    "Login realizado com sucesso"
-            );
-        }
-
+    if (resultado.isEmpty()) {
         return ResponseEntity
                 .status(401)
                 .body("E-mail ou senha incorretos");
     }
+
+    Usuario usuario = resultado.get();
+
+    Long comunidadeId = usuario.getComunidade() != null
+            ? usuario.getComunidade().getId()
+            : null;
+
+    LoginResponse resposta = new LoginResponse(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            comunidadeId
+    );
+
+    return ResponseEntity.ok(resposta);
+}
+
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrar(@RequestBody CadastroRequest request) {

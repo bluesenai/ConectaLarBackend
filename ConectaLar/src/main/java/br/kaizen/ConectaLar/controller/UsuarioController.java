@@ -22,6 +22,7 @@ public class UsuarioController {
     }
 
     
+
 @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
@@ -51,7 +52,6 @@ public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
     return ResponseEntity.ok(resposta);
 }
-
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrar(@RequestBody CadastroRequest request) {

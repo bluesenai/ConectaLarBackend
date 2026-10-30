@@ -7,31 +7,30 @@ import br.kaizen.ConectaLar.repository.CameraRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
 @Service
 public class TransmissaoService {
 
     private final CameraRepository cameraRepository;
+    private final MediaMtxService mediaMtxService;
 
     @Value("${camera.rtsp.host:}")
     private String host;
 
-    @Value("${camera.rtsp.port:554}")
-    private int porta;
+    public TransmissaoService(
+            CameraRepository cameraRepository,
+            MediaMtxService mediaMtxService) {
 
-    @Value("${camera.connection-timeout:5000}")
-    private int timeout;
-
-    public TransmissaoService(CameraRepository cameraRepository) {
         this.cameraRepository = cameraRepository;
+        this.mediaMtxService = mediaMtxService;
     }
 
     public StatusTransmissao consultarStatus(Long cameraId) {
+
         Camera camera = cameraRepository.findById(cameraId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Câmera não encontrada."));
+                        new IllegalArgumentException(
+                                "Câmera não encontrada."
+                        ));
 
         if (!camera.isAtiva()) {
             return new StatusTransmissao(
@@ -42,35 +41,25 @@ public class TransmissaoService {
             );
         }
 
-        if (host == null || host.isBlank()) {
-            return new StatusTransmissao(
-                    camera.getId(),
-                    false,
-                    "AGUARDANDO_CONFIGURACAO",
-                    "Informe o endereço IP da câmera para verificar a conexão."
-            );
-        }
+        String caminho = mediaMtxService.gerarCaminho(camera.getId());
 
-        try (Socket socket = new Socket()) {
-            socket.connect(
-                    new InetSocketAddress(host, porta),
-                    timeout
-            );
+        boolean transmitindo =
+                mediaMtxService.estaTransmitindo(caminho);
 
+        if (transmitindo) {
             return new StatusTransmissao(
                     camera.getId(),
                     true,
-                    "PORTA_RTSP_ACESSIVEL",
-                    "A porta RTSP está acessível. A transmissão de vídeo ainda precisa ser validada."
-            );
-
-        } catch (Exception e) {
-            return new StatusTransmissao(
-                    camera.getId(),
-                    false,
-                    "SEM_CONEXAO",
-                    "Não foi possível estabelecer conexão com a porta RTSP da câmera."
+                    "TRANSMITINDO",
+                    "O MediaMTX está recebendo uma transmissão no caminho da câmera."
             );
         }
+
+        return new StatusTransmissao(
+                camera.getId(),
+                false,
+                "SEM_TRANSMISSAO",
+                "Não existe uma transmissão ativa no MediaMTX para esta câmera."
+        );
     }
 }

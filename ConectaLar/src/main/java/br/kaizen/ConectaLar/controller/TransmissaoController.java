@@ -6,6 +6,7 @@ import br.kaizen.ConectaLar.model.Camera;
 import br.kaizen.ConectaLar.repository.CameraRepository;
 import br.kaizen.ConectaLar.service.TransmissaoService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
 
@@ -13,6 +14,8 @@ import java.util.Map;
 @RequestMapping("/transmissao")
 public class TransmissaoController {
 
+    @Value("${mediamtx.hls.base-url}")
+    private String mediaMtxUrl;
     private final TransmissaoService transmissaoService;
     private final CameraRepository cameraRepository;
 
@@ -38,13 +41,13 @@ public class TransmissaoController {
                         new IllegalArgumentException(
                                 "Câmera não encontrada."));
 
-        return Map.of(
+        return Map.of( "hlsUrl", mediaMtxUrl + "/camera" + camera.getId() + "/",
                 "cameraId", camera.getId(),
                 "nome", camera.getNome(),
                 "ativa", camera.isAtiva(),
                 "statusUrl", "/raiz_do_endpoint/transmissao/camera/"
                         + camera.getId() + "/status",
-                "mensagem", "Cadastro consultado. A transmissão de vídeo ainda precisa ser configurada."
+                "mensagem", "Cadastro consultado. O servidor MediaMTX está configurado para disponibilizar a transmissão."
         );
     }
 }

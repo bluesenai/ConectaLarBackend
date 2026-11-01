@@ -6,6 +6,9 @@ import br.kaizen.ConectaLar.repository.ComunidadeRepository;
 import br.kaizen.ConectaLar.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ComunidadeService {
 
@@ -46,5 +49,23 @@ public class ComunidadeService {
         }
 
         return comunidadeRepository.save(comunidade);
+    }
+
+    // Lista todos os bairros cadastrados, sem duplicações
+    public List<String> listarBairros() {
+
+        return comunidadeRepository.findAll()
+                .stream()
+                .map(Comunidade::getBairro)
+                .filter(bairro -> bairro != null && !bairro.isBlank())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    // Lista as ruas cadastradas em determinado bairro
+    public List<Comunidade> listarRuasPorBairro(String bairro) {
+
+        return comunidadeRepository.findByBairroIgnoreCase(bairro);
     }
 }

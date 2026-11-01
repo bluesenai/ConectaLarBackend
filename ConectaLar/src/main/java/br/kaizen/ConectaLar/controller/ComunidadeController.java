@@ -2,16 +2,16 @@ package br.kaizen.ConectaLar.controller;
 
 import br.kaizen.ConectaLar.DTO.CriarComunidadeRequest;
 import br.kaizen.ConectaLar.DTO.EntrarComunidadeRequest;
+import br.kaizen.ConectaLar.DTO.MoradorResponse;
 import br.kaizen.ConectaLar.model.Comunidade;
 import br.kaizen.ConectaLar.model.Usuario;
 import br.kaizen.ConectaLar.service.ComunidadeService;
+import br.kaizen.ConectaLar.service.UsuarioService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import br.kaizen.ConectaLar.DTO.MoradorResponse;
-import br.kaizen.ConectaLar.service.UsuarioService;
+
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/comunidade")
@@ -23,27 +23,26 @@ public class ComunidadeController {
     public ComunidadeController(
             ComunidadeService comunidadeService,
             UsuarioService usuarioService) {
+
         this.comunidadeService = comunidadeService;
         this.usuarioService = usuarioService;
     }
-    
-    
-@GetMapping("/{comunidadeId}/moradores")
-public ResponseEntity<List<MoradorResponse>> listarMoradores(
-        @PathVariable Long comunidadeId) {
 
-    List<MoradorResponse> moradores =
-            usuarioService.buscarMoradores(comunidadeId);
+    @GetMapping("/{comunidadeId}/moradores")
+    public ResponseEntity<List<MoradorResponse>> listarMoradores(
+            @PathVariable Long comunidadeId) {
 
-    return ResponseEntity.ok(moradores);
-}
+        List<MoradorResponse> moradores =
+                usuarioService.buscarMoradores(comunidadeId);
+
+        return ResponseEntity.ok(moradores);
+    }
 
     @PostMapping("/entrar")
     public ResponseEntity<?> entrar(
             @RequestBody EntrarComunidadeRequest request) {
 
         try {
-
             Usuario usuario = comunidadeService.entrarNaComunidade(
                     request.getUsuarioId(),
                     request.getCep()
@@ -54,10 +53,7 @@ public ResponseEntity<List<MoradorResponse>> listarMoradores(
             );
 
         } catch (RuntimeException e) {
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -66,7 +62,6 @@ public ResponseEntity<List<MoradorResponse>> listarMoradores(
             @RequestBody CriarComunidadeRequest request) {
 
         try {
-
             Comunidade comunidade = new Comunidade();
 
             comunidade.setCep(request.getCep());
@@ -81,10 +76,26 @@ public ResponseEntity<List<MoradorResponse>> listarMoradores(
             return ResponseEntity.ok(comunidadeSalva);
 
         } catch (RuntimeException e) {
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // Lista os bairros cadastrados
+    @GetMapping("/bairros")
+    public ResponseEntity<List<String>> listarBairros() {
+
+        return ResponseEntity.ok(
+                comunidadeService.listarBairros()
+        );
+    }
+
+    // Lista as ruas de um bairro
+    @GetMapping("/ruas")
+    public ResponseEntity<List<Comunidade>> listarRuasPorBairro(
+            @RequestParam String bairro) {
+
+        return ResponseEntity.ok(
+                comunidadeService.listarRuasPorBairro(bairro)
+        );
     }
 }

@@ -1590,49 +1590,8 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3di
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
 	... 151 more
-<<<<<<< HEAD
-2026-10-23 11:01:22.846572-03:00 database: close
-org.h2.message.DbException: IO Exception: "Closing" [90028-240]
-	at org.h2.message.DbException.get(DbException.java:212)
-	at org.h2.mvstore.db.Store.close(Store.java:352)
-	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1314)
-	at org.h2.engine.Database.closeImpl(Database.java:1276)
-	at org.h2.engine.Database.close(Database.java:1195)
-	at org.h2.engine.Database.onShutdown(Database.java:1180)
-	at org.h2.engine.OnExitDatabaseCloser.onShutdown(OnExitDatabaseCloser.java:85)
-	at org.h2.engine.OnExitDatabaseCloser.run(OnExitDatabaseCloser.java:114)
-Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing" [90028-240]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
-	... 8 more
-Caused by: org.h2.mvstore.MVStoreException: java.lang.AssertionError: 27 [2.4.240/3]
-	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
-	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:1048)
-	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:463)
-	at org.h2.mvstore.RandomAccessStore.compactStore(RandomAccessStore.java:443)
-	at org.h2.mvstore.FileStore.compactStore(FileStore.java:891)
-	at org.h2.mvstore.FileStore.stop(FileStore.java:275)
-	at org.h2.mvstore.MVStore.closeStore(MVStore.java:803)
-	at org.h2.mvstore.MVStore.close(MVStore.java:763)
-	at org.h2.mvstore.db.Store.close(Store.java:348)
-	... 6 more
-Caused by: java.lang.AssertionError: 27
-	at org.h2.mvstore.FreeSpaceBitSet.allocate(FreeSpaceBitSet.java:153)
-	at org.h2.mvstore.FreeSpaceBitSet.predictAllocation(FreeSpaceBitSet.java:133)
-	at org.h2.mvstore.RandomAccessStore.predictAllocation(RandomAccessStore.java:101)
-	at org.h2.mvstore.RandomAccessStore.moveChunkInside(RandomAccessStore.java:628)
-	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:569)
-	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:481)
-	at org.h2.mvstore.RandomAccessStore.lambda$compactMoveChunks$1(RandomAccessStore.java:468)
-	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1894)
-	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:1044)
-	... 13 more
-2026-10-23 11:02:34.639541-03:00 database: flush
-org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]" [50000-240]
-=======
 2026-10-30 09:20:18.170196-03:00 database: flush
 org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/NetBeansProjects/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]" [50000-240]
->>>>>>> 388c1dfef3f9af6f1ae31d8bf5994efadd33e58d
 	at org.h2.message.DbException.get(DbException.java:212)
 	at org.h2.message.DbException.convert(DbException.java:407)
 	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
@@ -1769,27 +1728,17 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52)
-<<<<<<< HEAD
-Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]" [50000-240]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
-	... 136 more
-Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]
-=======
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/NetBeansProjects/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]" [50000-240]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 136 more
 Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/NetBeansProjects/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]
->>>>>>> 388c1dfef3f9af6f1ae31d8bf5994efadd33e58d
 	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
 	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
 	... 130 more
-<<<<<<< HEAD
-=======
 2026-10-30 09:20:20.093730-03:00 database: flush
 org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3dib/Documents/NetBeansProjects/ConectaLarBackend/ConectaLar/data/conectalar.mv.db [2.4.240/7]" [50000-240]
 	at org.h2.message.DbException.get(DbException.java:212)
@@ -1943,4 +1892,39 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/sesi3di
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
 	... 134 more
->>>>>>> 388c1dfef3f9af6f1ae31d8bf5994efadd33e58d
+2026-11-06 08:31:10.269576-03:00 database: close
+org.h2.message.DbException: IO Exception: "Closing" [90028-240]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.close(Store.java:352)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1314)
+	at org.h2.engine.Database.closeImpl(Database.java:1276)
+	at org.h2.engine.Database.close(Database.java:1195)
+	at org.h2.engine.Database.onShutdown(Database.java:1180)
+	at org.h2.engine.OnExitDatabaseCloser.onShutdown(OnExitDatabaseCloser.java:85)
+	at org.h2.engine.OnExitDatabaseCloser.run(OnExitDatabaseCloser.java:114)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing" [90028-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 8 more
+Caused by: org.h2.mvstore.MVStoreException: java.lang.AssertionError: 34 [2.4.240/3]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:1048)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:463)
+	at org.h2.mvstore.RandomAccessStore.compactStore(RandomAccessStore.java:443)
+	at org.h2.mvstore.FileStore.compactStore(FileStore.java:891)
+	at org.h2.mvstore.FileStore.stop(FileStore.java:275)
+	at org.h2.mvstore.MVStore.closeStore(MVStore.java:803)
+	at org.h2.mvstore.MVStore.close(MVStore.java:763)
+	at org.h2.mvstore.db.Store.close(Store.java:348)
+	... 6 more
+Caused by: java.lang.AssertionError: 34
+	at org.h2.mvstore.FreeSpaceBitSet.allocate(FreeSpaceBitSet.java:153)
+	at org.h2.mvstore.FreeSpaceBitSet.predictAllocation(FreeSpaceBitSet.java:133)
+	at org.h2.mvstore.RandomAccessStore.predictAllocation(RandomAccessStore.java:101)
+	at org.h2.mvstore.RandomAccessStore.moveChunkInside(RandomAccessStore.java:628)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:569)
+	at org.h2.mvstore.RandomAccessStore.compactMoveChunks(RandomAccessStore.java:481)
+	at org.h2.mvstore.RandomAccessStore.lambda$compactMoveChunks$1(RandomAccessStore.java:468)
+	at org.h2.mvstore.FileStore.executeFileStoreOperation(FileStore.java:1894)
+	at org.h2.mvstore.MVStore.executeFilestoreOperation(MVStore.java:1044)
+	... 13 more
